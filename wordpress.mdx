@@ -1,17 +1,17 @@
 ---
 title: "WordPress Integration"
-description: "Automatically publish Roki articles to your WordPress site using the Tryroki plugin."
+description: "Automatically publish TryRoki articles to your WordPress site using the Tryroki plugin."
 ---
 
-<Card title="Download the Tryroki WordPress Plugin" icon="download" href="/tryroki.zip">
+<Card title="Download the TryRoki WordPress Plugin" icon="download" href="/tryroki.zip">
   Version 1.0.0 — requires WordPress 6.4+ and PHP 8.0+. Download `tryroki.zip`.
 </Card>
 
 ## Overview
 
-The Tryroki WordPress plugin creates a secure REST API on your WordPress site that Roki uses to push articles automatically. When Roki publishes an article, it sends the title, HTML content, featured image, meta description, and SEO keyword directly to your WordPress site — no credentials required, just a shared secret key.
+The TryRoki WordPress plugin creates a secure REST API on your WordPress site that TryRoki uses to push articles automatically. When TryRoki publishes an article, it sends the title, HTML content, featured image, meta description, and SEO keyword directly to your WordPress site — no credentials required, just a shared secret key.
 
-The plugin also downloads and localises any featured image into your WordPress media library and sets it as the post's featured image. Existing posts can be updated in place when Roki regenerates an article.
+The plugin also downloads and localises any featured image into your WordPress media library and sets it as the post's featured image. Existing posts can be updated in place when TryRoki regenerates an article.
 
 ## Step 1 — Install the plugin
 
@@ -29,33 +29,33 @@ Download the **tryroki.zip** file using the button above, then install it on you
   </Step>
 </Steps>
 
-After activation the plugin registers the REST API endpoints Roki needs and creates a settings page under **Settings → Tryroki** in your WordPress admin.
+After activation the plugin registers the REST API endpoints TryRoki needs and creates a settings page under **Settings → Tryroki** in your WordPress admin.
 
-## Step 2 — Connect to Roki
+## Step 2 — Connect to TryRoki
 
-Open the Roki dashboard and go to **Integrations → WordPress**. Make sure **Tryroki plugin (recommended)** is selected as the connection method, then:
+Open the TryRoki dashboard and go to **Integrations → WordPress**. Make sure **Tryroki plugin (recommended)** is selected as the connection method, then:
 
 <Steps>
   <Step title="Enter your site URL">
     Enter your **WordPress site URL** (e.g. `https://yourdomain.com`).
   </Step>
   <Step title="Save WordPress settings">
-    Click **Save WordPress Settings**. Roki generates a unique 48-character secret key and displays it.
+    Click **Save WordPress Settings**. TryRoki generates a unique 48-character secret key and displays it.
   </Step>
   <Step title="Copy the secret key">
-    Copy the **Plugin Secret Key** shown in the Roki dashboard.
+    Copy the **Plugin Secret Key** shown in the TryRoki dashboard.
   </Step>
   <Step title="Paste the key into WordPress">
     In your WordPress admin, go to **Settings → Tryroki** and paste the key into the **API Key** field. Save.
   </Step>
   <Step title="Test the connection">
-    Back in the Roki dashboard, click **Test connection** to verify the plugin can be reached.
+    Back in the TryRoki dashboard, click **Test connection** to verify the plugin can be reached.
   </Step>
 </Steps>
 
 ## How articles flow to WordPress
 
-When Roki publishes an article, a background job sends it to your WordPress site via the plugin REST API at `/wp-json/tryroki/v1/submit`. The request is authenticated using your secret key in the `X-Secret-Key` header.
+When TryRoki publishes an article, a background job sends it to your WordPress site via the plugin REST API at `/wp-json/tryroki/v1/submit`. The request is authenticated using your secret key in the `X-Secret-Key` header.
 
 ```
 X-Secret-Key: your-48-character-secret-key
@@ -63,29 +63,29 @@ X-Secret-Key: your-48-character-secret-key
 
 ### What gets sent
 
-Each submission includes the article title, full HTML content, meta description, URL slug, and primary SEO keyword. If Roki generated a featured image, the plugin downloads it from its source URL and attaches it to the post in your WordPress media library.
+Each submission includes the article title, full HTML content, meta description, URL slug, and primary SEO keyword. If TryRoki generated a featured image, the plugin downloads it from its source URL and attaches it to the post in your WordPress media library.
 
 ### Post status
 
-You can control whether articles land as **Published**, **Draft**, **Pending**, or **Private** via the **Default Post Status** setting in the Roki dashboard. The default is **Published**.
+You can control whether articles land as **Published**, **Draft**, **Pending**, or **Private** via the **Default Post Status** setting in the TryRoki dashboard. The default is **Published**.
 
 ### Updates
 
-If Roki regenerates an existing article, it calls `/wp-json/tryroki/v1/edit` to update the post in place rather than creating a duplicate. The plugin tracks which WordPress post ID maps to each Roki article so updates land on the correct post.
+If TryRoki regenerates an existing article, it calls `/wp-json/tryroki/v1/edit` to update the post in place rather than creating a duplicate. The plugin tracks which WordPress post ID maps to each TryRoki article so updates land on the correct post.
 
 ## Authentication & security
 
-All requests from Roki to your WordPress site are authenticated using the shared secret key. The plugin compares incoming keys using a constant-time comparison to prevent timing attacks. No WordPress credentials (username or password) are ever transmitted.
+All requests from TryRoki to your WordPress site are authenticated using the shared secret key. The plugin compares incoming keys using a constant-time comparison to prevent timing attacks. No WordPress credentials (username or password) are ever transmitted.
 
 <Warning>
-  Ensure your WordPress site is accessible over HTTPS so the secret key cannot be intercepted in transit. If you suspect the key has been compromised, delete the integration in the Roki dashboard, re-save to generate a new key, and update the plugin settings.
+  Ensure your WordPress site is accessible over HTTPS so the secret key cannot be intercepted in transit. If you suspect the key has been compromised, delete the integration in the TryRoki dashboard, re-save to generate a new key, and update the plugin settings.
 </Warning>
 
 ## Troubleshooting
 
 | Symptom | Check |
 | --- | --- |
-| Test connection fails | Verify the site URL is correct and the Tryroki plugin is activated on WordPress. |
-| Invalid secret key error | Confirm the key copied from the Roki dashboard matches exactly what is pasted into Settings → Tryroki on WordPress. |
-| Articles not appearing | Check that WordPress sync is enabled in the Roki dashboard and that the default post status is not set to Draft if you expect to see published posts. |
+| Test connection fails | Verify the site URL is correct and the TryRoki plugin is activated on WordPress. |
+| Invalid secret key error | Confirm the key copied from the TryRoki dashboard matches exactly what is pasted into Settings → Tryroki on WordPress. |
+| Articles not appearing | Check that WordPress sync is enabled in the TryRoki dashboard and that the default post status is not set to Draft if you expect to see published posts. |
 | Featured image missing | The plugin downloads images from external URLs — ensure your WordPress host can make outbound HTTP requests. |

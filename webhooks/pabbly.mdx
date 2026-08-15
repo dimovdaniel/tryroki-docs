@@ -1,19 +1,19 @@
 ---
 title: "Set up Pabbly Connect"
-description: "Send Roki article events to Pabbly Connect and automate workflows — unlimited operations on all plans."
+description: "Send TryRoki article events to Pabbly Connect and automate workflows — unlimited operations on all plans."
 ---
 
 [← Back to Webhooks](/webhooks/overview)
 
 ## How it works
 
-Pabbly Connect workflows start with a **Webhook by Pabbly Connect** trigger that generates a unique URL. When Roki fires an article event it POSTs the JSON payload to that URL. Pabbly captures all 12 fields automatically, making them available as variables for any downstream action step — no coding required.
+Pabbly Connect workflows start with a **Webhook by Pabbly Connect** trigger that generates a unique URL. When TryRoki fires an article event it POSTs the JSON payload to that URL. Pabbly captures all 12 fields automatically, making them available as variables for any downstream action step — no coding required.
 
 ## Step-by-step setup
 
 <Steps>
   <Step title="Create a new workflow">
-    Log in to **pabbly.com/connect** and click **Create Workflow**. Give it a name (e.g. _Roki → Sheets_) and click **Create**.
+    Log in to **pabbly.com/connect** and click **Create Workflow**. Give it a name (e.g. _TryRoki → Sheets_) and click **Create**.
   </Step>
   <Step title="Set up the Webhook trigger">
     The workflow opens with two panes: trigger on the left, action on the right. In the trigger pane click **Choose App**, search for **Webhook**, and select **Webhook by Pabbly Connect**.
@@ -24,13 +24,13 @@ Pabbly Connect workflows start with a **Webhook by Pabbly Connect** trigger that
     https://connect.pabbly.com/workflow/sendwebhookdata/XXXXXXXXXXXXXXXXXXXXXX
     ```
   </Step>
-  <Step title="Add the URL to Roki">
-    In the Roki dashboard go to **Integrations → Webhooks** and click **Add webhook**. Paste the Pabbly URL into **Endpoint URL**. Tick **On create** and/or **On update**, then save.
+  <Step title="Add the URL to TryRoki">
+    In the TryRoki dashboard go to **Integrations → Webhooks** and click **Add webhook**. Paste the Pabbly URL into **Endpoint URL**. Tick **On create** and/or **On update**, then save.
   </Step>
   <Step title="Capture the test payload">
     Back in Pabbly, click **Capture Webhook Response** in the trigger pane. Pabbly starts waiting for an incoming request.
 
-    In Roki, publish or update any article to send the first webhook. Pabbly immediately captures the data and shows all 12 fields:
+    In TryRoki, publish or update any article to send the first webhook. Pabbly immediately captures the data and shows all 12 fields:
 
     ```
     event_type: article.created
@@ -57,10 +57,10 @@ Pabbly Connect workflows start with a **Webhook by Pabbly Connect** trigger that
     - **Slack → Send Channel Message** — post a notification that includes the article title and keyword.
     - **HTTP → Make a GET / POST Request** — forward the full payload JSON to a custom endpoint or CMS.
 
-    In any action field, click inside the input box and then click the **Map** toggle (if visible) to switch to mapping mode. Select the Roki field you want from the dropdown — fields appear as `{{trigger.title}}`, `{{trigger.content}}`, etc.
+    In any action field, click inside the input box and then click the **Map** toggle (if visible) to switch to mapping mode. Select the TryRoki field you want from the dropdown — fields appear as `{{trigger.title}}`, `{{trigger.content}}`, etc.
   </Step>
   <Step title="Save and activate the workflow">
-    Click **Save** at the top of the page. Pabbly automatically activates the workflow — the toggle at the top-right should show **On**. From now on every Roki webhook event runs the workflow in real time.
+    Click **Save** at the top of the page. Pabbly automatically activates the workflow — the toggle at the top-right should show **On**. From now on every TryRoki webhook event runs the workflow in real time.
   </Step>
 </Steps>
 

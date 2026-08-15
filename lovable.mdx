@@ -1,45 +1,45 @@
 ---
 title: "Lovable"
-description: "Connect Roki to your Lovable site and have AI-generated blog posts published automatically — just paste one prompt and you're done."
+description: "Connect TryRoki to your Lovable site and have AI-generated blog posts published automatically — just paste one prompt and you're done."
 ---
 
-Paste one of the prompts below into your Lovable chat to connect Roki and start publishing blog posts automatically.
+Paste one of the prompts below into your Lovable chat to connect TryRoki and start publishing blog posts automatically.
 
 ## Prompts
 
 <Tabs>
   <Tab title="I don't have a blog system yet">
-    Use this if your Lovable site has no blog section. Lovable will build one and set up the Roki integration for you.
+    Use this if your Lovable site has no blog section. Lovable will build one and set up the TryRoki integration for you.
 
     ```text prompt
     I want to create a blog system in my site. Follow the best practices for a blog system.
-    The blog posts articles will be pushed from external system called Roki. Please fetch their document page https://tryroki.com/docs/webhooks, and learn how their webhooks work. I need to provide "webhook" url in their system.
+    The blog posts articles will be pushed from external system called TryRoki. Please fetch their document page https://tryroki.com/docs/webhooks, and learn how their webhooks work. I need to provide "webhook" url in their system.
     ```
   </Tab>
   <Tab title="I already have a blog system">
-    Use this if your Lovable site already has a blog. Lovable will add a Roki integration to your existing setup.
+    Use this if your Lovable site already has a blog. Lovable will add a TryRoki integration to your existing setup.
 
     ```text prompt
-    I want the blog posts articles to be pushed from external system called Roki. Please fetch their document page https://tryroki.com/docs/webhooks, and learn how their webhooks work. I need to provide "webhook" url in their system.
+    I want the blog posts articles to be pushed from external system called TryRoki. Please fetch their document page https://tryroki.com/docs/webhooks, and learn how their webhooks work. I need to provide "webhook" url in their system.
     ```
   </Tab>
 </Tabs>
 
-After Lovable responds, copy the webhook URL it provides and paste it into **Roki → Integrations → Webhooks**.
+After Lovable responds, copy the webhook URL it provides and paste it into **TryRoki → Integrations → Webhooks**.
 
-## How the Roki + Lovable integration works
+## How the TryRoki + Lovable integration works
 
-Lovable is an AI-powered web development platform that lets you build fully functional websites and apps through natural language conversations. When you use one of the prompts above, Lovable reads the Roki webhook documentation, creates a blog system inside your project, and exposes an HTTP endpoint that Roki can POST new articles to.
+Lovable is an AI-powered web development platform that lets you build fully functional websites and apps through natural language conversations. When you use one of the prompts above, Lovable reads the TryRoki webhook documentation, creates a blog system inside your project, and exposes an HTTP endpoint that TryRoki can POST new articles to.
 
-Once you paste the resulting webhook URL into the Roki dashboard, every article Roki publishes — including title, content, featured image, and SEO metadata — is delivered directly to your Lovable site within seconds. No manual copying, no CSV exports, no third-party middleware required.
+Once you paste the resulting webhook URL into the TryRoki dashboard, every article TryRoki publishes — including title, content, featured image, and SEO metadata — is delivered directly to your Lovable site within seconds. No manual copying, no CSV exports, no third-party middleware required.
 
-## Why use Roki with your Lovable site?
+## Why use TryRoki with your Lovable site?
 
-- **SEO traffic on autopilot.** Roki generates keyword-targeted, long-form articles on a schedule you control. Fresh content signals search engines that your Lovable site is active, which compounds into higher organic rankings over time.
-- **Zero ongoing effort.** After the one-time setup — one prompt, one webhook URL paste — the pipeline is fully automated. Roki writes, Lovable publishes, and your blog grows without you lifting a finger.
+- **SEO traffic on autopilot.** Roki AI generates keyword-targeted, long-form articles on a schedule you control. Fresh content signals search engines that your Lovable site is active, which compounds into higher organic rankings over time.
+- **Zero ongoing effort.** After the one-time setup — one prompt, one webhook URL paste — the pipeline is fully automated. Roki AI writes, Lovable publishes, and your blog grows without you lifting a finger.
 - **Built for Lovable's AI-native stack.** Because the whole integration is a single HTTP endpoint, Lovable's AI can wire it up in one conversation — no manual API keys, OAuth flows, or plugin installs.
-- **Full article payload delivered.** Roki sends the complete article on every event: headline, full HTML body, target keyword, meta description, publish date, and cover image URL — everything Lovable needs to render a polished blog post.
+- **Full article payload delivered.** TryRoki sends the complete article on every event: headline, full HTML body, target keyword, meta description, publish date, and cover image URL — everything Lovable needs to render a polished blog post.
 
 ## Under the hood
 
-The Lovable integration is powered by Roki's standard [webhook system](/webhooks/overview). When an article is created or updated, Roki sends an HTTP POST request with a JSON body to your Lovable endpoint. The payload includes all article fields — the same format used by every other Roki integration. See the [webhook documentation](/webhooks/overview) for the full payload reference, event types, and delivery behaviour.
+The Lovable integration is powered by TryRoki's standard [webhook system](/webhooks/overview). When an article is created or updated, TryRoki sends an HTTP POST request with a JSON body to your Lovable endpoint. The payload includes all article fields — the same format used by every other TryRoki integration. See the [webhook documentation](/webhooks/overview) for the full payload reference, event types, and delivery behaviour.

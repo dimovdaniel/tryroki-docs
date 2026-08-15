@@ -1,13 +1,13 @@
 ---
 title: "Set up Zapier"
-description: "Route every Roki article event into 6,000+ apps using Zapier's no-code automation."
+description: "Route every TryRoki article event into 6,000+ apps using Zapier's no-code automation."
 ---
 
 [← Back to Webhooks](/webhooks/overview)
 
 ## How it works
 
-Zapier's **Webhooks by Zapier** trigger listens for incoming HTTP POSTs. You give Roki the Zapier-generated URL, and every time an article is created or updated Roki sends the full payload there. Zapier parses the JSON automatically, so you can map fields like `title` or `content` to any action step without writing code.
+Zapier's **Webhooks by Zapier** trigger listens for incoming HTTP POSTs. You give TryRoki the Zapier-generated URL, and every time an article is created or updated TryRoki sends the full payload there. Zapier parses the JSON automatically, so you can map fields like `title` or `content` to any action step without writing code.
 
 ## Step-by-step setup
 
@@ -24,11 +24,11 @@ Zapier's **Webhooks by Zapier** trigger listens for incoming HTTP POSTs. You giv
     https://hooks.zapier.com/hooks/catch/XXXXXXX/YYYYYYY/
     ```
   </Step>
-  <Step title="Add the URL to Roki">
-    In the Roki dashboard go to **Integrations → Webhooks** and click **Add webhook**. Paste the Zapier URL into the **Endpoint URL** field. Tick **On create** and/or **On update** depending on which events you want, then click **Add Webhook**.
+  <Step title="Add the URL to TryRoki">
+    In the TryRoki dashboard go to **Integrations → Webhooks** and click **Add webhook**. Paste the Zapier URL into the **Endpoint URL** field. Tick **On create** and/or **On update** depending on which events you want, then click **Add Webhook**.
   </Step>
   <Step title="Send a test event">
-    Back in Zapier, click **Test trigger**. Zapier waits for an incoming request. In Roki, publish or update any article to fire the webhook. Within a few seconds Zapier shows the captured data:
+    Back in Zapier, click **Test trigger**. Zapier waits for an incoming request. In TryRoki, publish or update any article to fire the webhook. Within a few seconds Zapier shows the captured data:
 
     ```
     event_type: article.created
@@ -55,8 +55,8 @@ Zapier's **Webhooks by Zapier** trigger listens for incoming HTTP POSTs. You giv
     - **Notion** — add a new database item, mapping `content` to a text property.
     - **Webhooks by Zapier → POST** — forward the data to another URL, e.g. a CMS ingestion endpoint.
   </Step>
-  <Step title="Map the Roki payload fields">
-    In any action step, click into a field and then pick from the trigger data on the right panel. Every field from the Roki payload is available:
+  <Step title="Map the TryRoki payload fields">
+    In any action step, click into a field and then pick from the trigger data on the right panel. Every field from the TryRoki payload is available:
 
     | Zapier field name | Contains |
     | --- | --- |
@@ -74,12 +74,12 @@ Zapier's **Webhooks by Zapier** trigger listens for incoming HTTP POSTs. You giv
     | `Image` | Cover image URL |
   </Step>
   <Step title="Turn on the Zap">
-    Once your action is configured and tested, toggle the Zap to **On**. From now on every matching Roki event triggers the Zap automatically.
+    Once your action is configured and tested, toggle the Zap to **On**. From now on every matching TryRoki event triggers the Zap automatically.
   </Step>
 </Steps>
 
 ## Tips
 
-- To filter on event type, add a **Filter** step between the trigger and action. Zapier captures all events from Roki (both create and update) at the same URL — use a filter if you only want to act on new articles.
+- To filter on event type, add a **Filter** step between the trigger and action. Zapier captures all events from TryRoki (both create and update) at the same URL — use a filter if you only want to act on new articles.
 - The `content` field is Markdown and `content_html` is the rendered HTML. Map whichever your destination expects natively; use Zapier's **Formatter** step if you need to convert between them.
 - Zapier's free plan supports 100 tasks/month. Each article event consumes one task per Zap step it passes through.
