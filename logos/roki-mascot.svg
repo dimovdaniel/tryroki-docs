@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Roki mascot head -->
+  <!-- antenna -->
+  <circle cx="256" cy="54" r="26" fill="#8B7CE0"/>
+  <rect x="248" y="62" width="16" height="48" fill="#6F5FD0"/>
+  <rect x="222" y="96" width="68" height="20" rx="10" fill="#4EC9DD"/>
+  <!-- ears -->
+  <circle cx="68" cy="296" r="48" fill="#6F5FD0"/>
+  <circle cx="68" cy="296" r="28" fill="#4EC9DD"/>
+  <circle cx="68" cy="296" r="15" fill="#54479F"/>
+  <circle cx="444" cy="296" r="48" fill="#6F5FD0"/>
+  <circle cx="444" cy="296" r="28" fill="#4EC9DD"/>
+  <circle cx="444" cy="296" r="15" fill="#54479F"/>
+  <!-- head -->
+  <rect x="84" y="116" width="344" height="330" rx="126" fill="#8B7CE0"/>
+  <!-- face screen -->
+  <rect x="130" y="188" width="252" height="172" rx="62" fill="#F6F4FB"/>
+  <!-- eyebrows -->
+  <path d="M172 234 Q192 220 212 230" stroke="#3D4C8A" stroke-width="11" stroke-linecap="round"/>
+  <path d="M300 230 Q320 220 340 234" stroke="#3D4C8A" stroke-width="11" stroke-linecap="round"/>
+  <!-- eyes -->
+  <ellipse cx="194" cy="282" rx="27" ry="31" fill="#2C3658"/>
+  <circle cx="186" cy="270" r="8" fill="#FFFFFF"/>
+  <ellipse cx="318" cy="282" rx="27" ry="31" fill="#2C3658"/>
+  <circle cx="310" cy="270" r="8" fill="#FFFFFF"/>
+  <!-- mouth -->
+  <path d="M230 300 a26 26 0 0 0 52 0 Z" fill="#2C3658"/>
+  <path d="M243 314 a13 9 0 0 0 26 0 Z" fill="#3FC4DA"/>
+</svg>
