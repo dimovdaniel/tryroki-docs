@@ -1,0 +1,72 @@
+---
+title: "Set up Pabbly Connect"
+description: "Send Roki article events to Pabbly Connect and automate workflows — unlimited operations on all plans."
+---
+
+[← Back to Webhooks](/webhooks/overview)
+
+## How it works
+
+Pabbly Connect workflows start with a **Webhook by Pabbly Connect** trigger that generates a unique URL. When Roki fires an article event it POSTs the JSON payload to that URL. Pabbly captures all 12 fields automatically, making them available as variables for any downstream action step — no coding required.
+
+## Step-by-step setup
+
+<Steps>
+  <Step title="Create a new workflow">
+    Log in to **pabbly.com/connect** and click **Create Workflow**. Give it a name (e.g. _Roki → Sheets_) and click **Create**.
+  </Step>
+  <Step title="Set up the Webhook trigger">
+    The workflow opens with two panes: trigger on the left, action on the right. In the trigger pane click **Choose App**, search for **Webhook**, and select **Webhook by Pabbly Connect**.
+
+    Pabbly generates a unique webhook URL — copy it:
+
+    ```
+    https://connect.pabbly.com/workflow/sendwebhookdata/XXXXXXXXXXXXXXXXXXXXXX
+    ```
+  </Step>
+  <Step title="Add the URL to Roki">
+    In the Roki dashboard go to **Integrations → Webhooks** and click **Add webhook**. Paste the Pabbly URL into **Endpoint URL**. Tick **On create** and/or **On update**, then save.
+  </Step>
+  <Step title="Capture the test payload">
+    Back in Pabbly, click **Capture Webhook Response** in the trigger pane. Pabbly starts waiting for an incoming request.
+
+    In Roki, publish or update any article to send the first webhook. Pabbly immediately captures the data and shows all 12 fields:
+
+    ```
+    event_type: article.created
+    id: 42
+    title: 10 Best Coffee Shops in London
+    target_keyword: best coffee shops in london
+    meta_description: Discover the top coffee shops in London for 2026.
+    publish_status: published
+    publish_date: 2026-01-15 10:00:00
+    article_type: List - Roundup
+    content: ## Full Markdown body of the article...
+    content_html: <h2 id="best-coffee-shops-in-london">Best Coffee Shops in London</h2>...
+    json_ld: [{"@context":"https://schema.org","@type":"BlogPosting","headline":"..."}]
+    image: https://cdn.example.com/cover.jpg
+    ```
+
+    Click **Save & Send Test Request** to confirm the trigger is working.
+  </Step>
+  <Step title="Add an action step and map fields">
+    In the right (action) pane click **Choose App** and select your destination. Common choices:
+
+    - **Google Sheets → Add New Row** — map `title`, `target_keyword`, `publish_date`, `image` to spreadsheet columns.
+    - **Notion → Create Page** — use `title` as the page name, paste `content` into a text block.
+    - **Slack → Send Channel Message** — post a notification that includes the article title and keyword.
+    - **HTTP → Make a GET / POST Request** — forward the full payload JSON to a custom endpoint or CMS.
+
+    In any action field, click inside the input box and then click the **Map** toggle (if visible) to switch to mapping mode. Select the Roki field you want from the dropdown — fields appear as `{{trigger.title}}`, `{{trigger.content}}`, etc.
+  </Step>
+  <Step title="Save and activate the workflow">
+    Click **Save** at the top of the page. Pabbly automatically activates the workflow — the toggle at the top-right should show **On**. From now on every Roki webhook event runs the workflow in real time.
+  </Step>
+</Steps>
+
+## Tips
+
+- Pabbly receives both `article.created` and `article.updated` events at the same URL. Use the **Pabbly Filter** action to branch on a field value if you need different behaviour for each event type.
+- The `content` field is Markdown and `content_html` is the rendered HTML — pick the one your destination expects. If you need plain text, use Pabbly's built-in **Text Formatter → Strip HTML** step on the HTML field.
+- Unlike Zapier and Make, Pabbly Connect does **not** charge per task — all paid plans include unlimited workflow executions.
+- You can add multiple action steps to a single workflow — for example, save to Google Sheets _and_ post to Slack in one run.

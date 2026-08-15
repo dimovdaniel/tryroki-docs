@@ -1,0 +1,85 @@
+---
+title: "Set up Zapier"
+description: "Route every Roki article event into 6,000+ apps using Zapier's no-code automation."
+---
+
+[← Back to Webhooks](/webhooks/overview)
+
+## How it works
+
+Zapier's **Webhooks by Zapier** trigger listens for incoming HTTP POSTs. You give Roki the Zapier-generated URL, and every time an article is created or updated Roki sends the full payload there. Zapier parses the JSON automatically, so you can map fields like `title` or `content` to any action step without writing code.
+
+## Step-by-step setup
+
+<Steps>
+  <Step title="Create a new Zap">
+    Log in to **zapier.com** and click **+ Create Zap** in the sidebar.
+  </Step>
+  <Step title="Add a Webhooks by Zapier trigger">
+    In the trigger search box type **Webhooks by Zapier** and select it. Choose the event **Catch Hook** and click **Continue**.
+
+    Zapier displays a unique webhook URL — copy it. It looks like:
+
+    ```
+    https://hooks.zapier.com/hooks/catch/XXXXXXX/YYYYYYY/
+    ```
+  </Step>
+  <Step title="Add the URL to Roki">
+    In the Roki dashboard go to **Integrations → Webhooks** and click **Add webhook**. Paste the Zapier URL into the **Endpoint URL** field. Tick **On create** and/or **On update** depending on which events you want, then click **Add Webhook**.
+  </Step>
+  <Step title="Send a test event">
+    Back in Zapier, click **Test trigger**. Zapier waits for an incoming request. In Roki, publish or update any article to fire the webhook. Within a few seconds Zapier shows the captured data:
+
+    ```
+    event_type: article.created
+    id: 42
+    title: 10 Best Coffee Shops in London
+    target_keyword: best coffee shops in london
+    meta_description: Discover the top coffee shops in London for 2026.
+    publish_status: published
+    publish_date: 2026-01-15 10:00:00
+    article_type: List - Roundup
+    content: ## Full Markdown body of the article...
+    content_html: <h2 id="best-coffee-shops-in-london">Best Coffee Shops in London</h2>...
+    json_ld: [{"@context":"https://schema.org","@type":"BlogPosting","headline":"..."}]
+    image: https://cdn.example.com/cover.jpg
+    ```
+
+    If you see these 12 fields the trigger is wired correctly.
+  </Step>
+  <Step title="Set up an action step">
+    Click **+ Add step → Action** and choose your destination app. Common choices:
+
+    - **Google Sheets** — create or update a row, mapping `title`, `target_keyword`, `image`, etc. to spreadsheet columns.
+    - **Slack** — post a message like _"New article: {title}"_ to a channel.
+    - **Notion** — add a new database item, mapping `content` to a text property.
+    - **Webhooks by Zapier → POST** — forward the data to another URL, e.g. a CMS ingestion endpoint.
+  </Step>
+  <Step title="Map the Roki payload fields">
+    In any action step, click into a field and then pick from the trigger data on the right panel. Every field from the Roki payload is available:
+
+    | Zapier field name | Contains |
+    | --- | --- |
+    | `Event Type` | `"article.created"` or `"article.updated"` |
+    | `Id` | Numeric article ID |
+    | `Title` | Article headline |
+    | `Target Keyword` | Primary SEO keyword |
+    | `Meta Description` | Search snippet description |
+    | `Publish Status` | Always `"published"` |
+    | `Publish Date` | ISO datetime of publication |
+    | `Article Type` | One of `"Guide - Howto"`, `"Guide - Explainer"`, `"Comparison"`, `"List - Roundup"` |
+    | `Content` | Full body in Markdown |
+    | `Content Html` | Same body rendered to HTML with TOC-matching heading anchors |
+    | `Json Ld` | Array of JSON-LD structured data blocks (BlogPosting, FAQPage…) |
+    | `Image` | Cover image URL |
+  </Step>
+  <Step title="Turn on the Zap">
+    Once your action is configured and tested, toggle the Zap to **On**. From now on every matching Roki event triggers the Zap automatically.
+  </Step>
+</Steps>
+
+## Tips
+
+- To filter on event type, add a **Filter** step between the trigger and action. Zapier captures all events from Roki (both create and update) at the same URL — use a filter if you only want to act on new articles.
+- The `content` field is Markdown and `content_html` is the rendered HTML. Map whichever your destination expects natively; use Zapier's **Formatter** step if you need to convert between them.
+- Zapier's free plan supports 100 tasks/month. Each article event consumes one task per Zap step it passes through.
