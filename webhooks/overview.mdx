@@ -1,0 +1,123 @@
+---
+title: "Webhooks"
+description: "Receive real-time HTTP notifications whenever Roki publishes or updates an article."
+---
+
+Set up an integration with one of the supported automation platforms, or point a webhook at your own endpoint:
+
+<CardGroup cols={4}>
+  <Card title="Zapier" href="/webhooks/zapier" />
+  <Card title="Make.com" href="/webhooks/make" />
+  <Card title="Pabbly Connect" href="/webhooks/pabbly" />
+  <Card title="Lovable" href="/lovable" />
+</CardGroup>
+
+## Overview
+
+Webhooks let you push article data to any HTTP endpoint the moment Roki publishes or updates content. Each account supports up to **3 active webhook endpoints**. When an event fires, Roki sends a single HTTP POST request with a JSON body to every matching active webhook within seconds.
+
+Common uses include syncing articles to a headless CMS, triggering a build pipeline, sending Slack notifications, or logging new content to a spreadsheet.
+
+## Events
+
+Roki fires two webhook events. You can subscribe to one or both when configuring each endpoint.
+
+<ResponseField name="article.created" type="event">
+  Fired when Roki finishes generating and publishing a brand-new article. This is the event to use if you want to pipe fresh content into a CMS or trigger a site build on every new post.
+</ResponseField>
+
+<ResponseField name="article.updated" type="event">
+  Fired when an existing article's content, title, or metadata is changed — for example after a manual edit or an AI-regeneration. Use this to keep downstream systems in sync with the latest version of each article.
+</ResponseField>
+
+## Payload
+
+Both events deliver the same JSON body via HTTP POST. The `Content-Type` header is always `application/json`.
+
+```json
+{
+  "event_type": "article.created",
+  "id": 42,
+  "title": "10 Best Coffee Shops in London",
+  "target_keyword": "best coffee shops in london",
+  "meta_description": "Discover the top coffee shops in London for 2026.",
+  "publish_status": "published",
+  "publish_date": "2026-01-15 10:00:00",
+  "article_type": "List - Roundup",
+  "content": "## Full Markdown body of the article...",
+  "content_html": "<h2 id=\"best-coffee-shops-in-london\">Best Coffee Shops in London</h2>...",
+  "json_ld": [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "10 Best Coffee Shops in London",
+      "url": "https://example.com/blog/best-coffee-shops-in-london"
+    }
+  ],
+  "image": "https://cdn.example.com/cover.jpg"
+}
+```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `event_type` | string | Either `"article.created"` or `"article.updated"`. |
+| `id` | integer | Unique article identifier. |
+| `title` | string | Article headline. |
+| `target_keyword` | string | Primary SEO keyword the article is optimised for. |
+| `meta_description` | string | Short description used in search-engine snippets. |
+| `publish_status` | string | Always `"published"` when a webhook fires. |
+| `publish_date` | string \| null | ISO 8601 datetime of publication, or `null` for immediate publish. |
+| `article_type` | string | Article shape selected by Roki when planning the post — one of `Guide - Howto`, `Guide - Explainer`, `Comparison`, or `List - Roundup`. Useful for routing to different downstream templates. |
+| `content` | string | Full body of the article in **Markdown**. Use this when you want the raw source — for example to store in a CMS that has its own Markdown renderer. |
+| `content_html` | string | Same body rendered to **HTML**. Every heading carries an `id` that matches the corresponding Table of Contents anchor, so in-page jumps work without extra processing. |
+| `json_ld` | object[] | Array of [JSON-LD](https://json-ld.org) structured-data blocks for the article (typically a `BlogPosting` and, when applicable, an `FAQPage`). Drop these directly into your page's `<head>` as `<script type="application/ld+json">` tags. Empty array when no structured data is generated. |
+| `image` | string \| null | Cover image URL, or `null` if no image was generated. |
+
+## Configuring a webhook
+
+Open the Roki dashboard and go to **Integrations → Webhooks**. Click **Add webhook** and fill in the form:
+
+<Steps>
+  <Step title="Endpoint URL">
+    The full HTTPS URL Roki should POST to.
+  </Step>
+  <Step title="Events">
+    Tick **On create** to receive `article.created`, tick **On update** for `article.updated`, or enable both.
+  </Step>
+  <Step title="Custom headers (optional)">
+    A JSON object of headers to include in every request, useful for authentication tokens.
+  </Step>
+</Steps>
+
+Each account can have a maximum of 3 webhooks. You can enable, disable, edit, or delete any webhook at any time from the same page.
+
+## Custom headers
+
+The headers field accepts a valid JSON object. Each key-value pair is sent as an HTTP request header alongside every webhook delivery. Use this to pass authentication credentials to your endpoint.
+
+```json
+{
+  "Authorization": "Bearer your-secret-token",
+  "X-Custom-Header": "my-value"
+}
+```
+
+Header values must be strings. If the field is left blank, no extra headers are added. Invalid JSON will be rejected when you save the webhook.
+
+## Delivery behaviour
+
+Roki delivers each event asynchronously via a background job. Your endpoint has **15 seconds** to respond before the request times out. Any HTTP **2xx** status code is treated as a successful delivery. Non-2xx responses and timeouts are logged as failures.
+
+<Warning>
+  Roki does not automatically retry failed deliveries. Make sure your endpoint is idempotent and returns 2xx as quickly as possible — defer any heavy processing to a background queue on your side.
+</Warning>
+
+## Securing your endpoint
+
+Because Roki does not sign payloads, the recommended approach is to use a shared secret token via the custom headers field and verify it on every incoming request. For example, set:
+
+```json
+{ "Authorization": "Bearer YOUR_LONG_RANDOM_SECRET" }
+```
+
+In your endpoint, reject any request where the `Authorization` header does not match before processing the payload. Additionally, only accept requests over HTTPS to prevent token interception.

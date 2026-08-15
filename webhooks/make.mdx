@@ -1,0 +1,70 @@
+---
+title: "Set up Make.com"
+description: "Receive Roki article events in Make.com and automate workflows across hundreds of apps."
+---
+
+[← Back to Webhooks](/webhooks/overview)
+
+## How it works
+
+Make.com scenarios start with a **Custom Webhook** module that gives you a unique URL. When Roki fires an event it sends a JSON POST to that URL. Make automatically inspects the payload to build a data structure, so all 12 fields (`title`, `content`, `image`, etc.) are available as named variables in every subsequent module.
+
+## Step-by-step setup
+
+<Steps>
+  <Step title="Create a new scenario">
+    Log in to **make.com** and click **Create a new scenario**. When the canvas opens, click the large **+** circle to add the first module.
+  </Step>
+  <Step title="Add a Custom Webhook trigger">
+    Search for **Webhooks** and select the **Webhooks** app. Choose **Custom webhook** as the module type.
+
+    In the module settings click **Add → Create a webhook**. Give it a name (e.g. _Roki Articles_) and click **Save**. Make displays a webhook URL — copy it:
+
+    ```
+    https://hook.eu2.make.com/XXXXXXXXXXXXXXXXXXXXXXXX
+    ```
+  </Step>
+  <Step title="Add the URL to Roki">
+    In the Roki dashboard go to **Integrations → Webhooks** and click **Add webhook**. Paste the Make URL into **Endpoint URL**. Tick **On create** and/or **On update**, then save.
+  </Step>
+  <Step title="Register the data structure">
+    Click **OK** on the Make webhook module to close it, then click **Run once** in the bottom toolbar. Make is now listening for one request.
+
+    In Roki, publish or update any article to fire the webhook. Make captures the payload and automatically infers the data structure from the JSON body. You should see a bubble appear on the webhook module showing **1 bundle** was received. Click it to inspect all 12 fields:
+
+    ```
+    event_type: article.created
+    id: 42
+    title: 10 Best Coffee Shops in London
+    target_keyword: best coffee shops in london
+    meta_description: Discover the top coffee shops in London for 2026.
+    publish_status: published
+    publish_date: 2026-01-15 10:00:00
+    article_type: List - Roundup
+    content: ## Full Markdown body of the article...
+    content_html: <h2 id="best-coffee-shops-in-london">Best Coffee Shops in London</h2>...
+    json_ld: [{"@context":"https://schema.org","@type":"BlogPosting","headline":"..."}]
+    image: https://cdn.example.com/cover.jpg
+    ```
+  </Step>
+  <Step title="Add action modules and map fields">
+    Click the **+** circle to the right of the webhook module to add an action. Popular choices:
+
+    - **Google Sheets → Add a Row** — map `title`, `target_keyword`, `image` to spreadsheet columns.
+    - **Notion → Create a Database Item** — map `title` to the Name property, `content` to a rich-text property.
+    - **HTTP → Make a Request** — forward the payload to a CMS API or any custom endpoint.
+    - **Slack → Create a Message** — post a notification with the article title and a link.
+
+    To insert a Roki field into a module input, click inside the field, then select the webhook item from the dropdown that appears. Make lists all mapped fields by name (`title`, `content`, `image`, etc.).
+  </Step>
+  <Step title="Schedule and activate the scenario">
+    Click **Save** (floppy disk icon) and then set the scheduling to **Immediately as data arrives** for real-time processing. Toggle the scenario to **On** using the switch in the bottom-left corner. The scenario now runs automatically on every Roki webhook event.
+  </Step>
+</Steps>
+
+## Tips
+
+- Make receives both `article.created` and `article.updated` events at the same URL. Add a **Router** module to branch the scenario and handle each event type differently.
+- The `content` field is Markdown and `content_html` is the rendered HTML — pick whichever your downstream action expects. Use Make's **Tools → HTML to Text** function if you need plain text.
+- Make's free plan includes 1,000 operations/month. Each module execution in the scenario counts as one operation.
+- If the data structure shows _"Data structure was not determined"_, click **Re-determine data structure** and fire another webhook from Roki.
