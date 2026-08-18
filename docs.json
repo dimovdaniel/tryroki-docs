@@ -20,7 +20,8 @@
         "group": "Integrations",
         "pages": [
           "wordpress",
-          "lovable"
+          "lovable",
+          "nextjs"
         ]
       },
       {
