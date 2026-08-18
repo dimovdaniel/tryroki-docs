@@ -31,6 +31,12 @@
           "webhooks/make",
           "webhooks/pabbly"
         ]
+      },
+      {
+        "group": "Changelog",
+        "pages": [
+          "changelog"
+        ]
       }
     ],
     "global": {

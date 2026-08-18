@@ -1,0 +1,66 @@
+---
+title: "Changelog"
+description: "New features, improvements, and fixes in Roki — updated as we ship."
+---
+
+<Update label="August 18, 2026">
+  **New — Shareable article previews.** Share a polished, public preview of any article before it goes live, straight from a new **Preview** button in the editor. The preview page was refined to drop the duplicated title, date, and cover for a cleaner read.
+</Update>
+
+<Update label="August 17, 2026">
+  **New — Reddit commenting opportunities on the content planner.** Spot Reddit engagement openings right alongside your scheduled content. Opportunities are deduplicated by URL and capped at five per day per cell, with a "+X more" indicator when there are extras.
+
+  **New — AI SEO Report badge on the planner.** Planner cells now surface an AI SEO Report badge so you can see at a glance where a report is available.
+
+  **Improved — SEO week reports release sooner.** Weekly SEO reports are now published as soon as their week begins, and the current week is included in your reports archive.
+</Update>
+
+<Update label="August 15, 2026">
+  **New — MCP integration for your own AI agents.** Connect client-owned AI agents to Roki over the Model Context Protocol. Import and manage articles programmatically with the `upsert_article`, `list_articles`, and `get_article` tools, authenticated and scoped to your company API key. A new MCP integration page shows your endpoint and key, and MCP now appears in the Integrations grid.
+
+  **Improved — Simpler onboarding.** Registration no longer asks for phone and address, site URLs are normalized automatically, and the color step is hidden to get you set up faster.
+
+  **Fixed — Search result links stored correctly.** Fixed MariaHill search results not persisting their result link.
+</Update>
+
+<Update label="August 14, 2026">
+  **New — A more capable article editor.** Edit article titles inline with a pencil action, track length with title and description character counters, remove sections with a new delete control, and keep things tidy with a Table of Contents that's collapsed by default.
+
+  **Improved — State-aware editing and instant generation.** Edit affordances now adapt to an article's state, and content generation is triggered immediately instead of waiting.
+
+  **Fixed — Cleaner images and on-brand prompts.** Fixed formatting around inline images, and stopped brand color palettes from leaking into image generation prompts.
+</Update>
+
+<Update label="August 13, 2026">
+  **New — AI editing for article text and images.** Rewrite and refine your content and visuals with AI directly in the editor. Content Generation settings were regrouped into clearer sub-sections with a dedicated Branding tab.
+
+  **New — Edit titles and slugs of unpublished articles.** Adjust the title and slug of an article before it's published.
+
+  **Improved — Smarter onboarding and drafting.** Onboarding descriptions are now grounded in your scraped site metadata, the writing agent is aware of today's date, and today's draft is generated automatically once your content plan is ready.
+
+  **Fixed — Webhook respects publish state.** The "Article made" webhook now fires according to an article's published/unpublished state.
+</Update>
+
+<Update label="August 12, 2026">
+  **New — AgentaOS payments.** Added AgentaOS as a payment provider, with server-side checkout sessions for reliable attribution and automatic reconciliation of subscription cancellations and expiries.
+
+  **New — More control from the planner.** Manually override the article type per slot, and trigger a "Generate now" run (impersonation-gated) directly from the planner.
+
+  **Fixed — No more DataForSEO timeouts.** Keyword fetches no longer fail on the default 30-second timeout.
+</Update>
+
+<Update label="August 11, 2026">
+  **Improved — See every article on busy days.** The planner now shows all articles scheduled on the same date instead of hiding the extras.
+</Update>
+
+<Update label="August 10, 2026">
+  **New — Fury Browser Extension integration.** Connect the Fury Browser Extension with API-key authentication. It's listed and documented on the Integrations page.
+
+  **New — Reddit commenting queue.** Added a commenting queue and a Reddit comments API to manage engagement opportunities in bulk.
+
+  **Improved — Readable SEO task instructions.** SEO task instructions now render Markdown as formatted HTML, and the Fury workspace hides Posting Opportunities where they don't apply.
+</Update>
+
+<Update label="August 7, 2026">
+  **Improved — Editable, better-styled SEO reports.** Member report sections and info boxes are now styled consistently and editable from the admin SEO tasks view.
+</Update>
