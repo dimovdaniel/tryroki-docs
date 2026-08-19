@@ -1,0 +1,282 @@
+---
+title: "Next.js"
+description: "Wire TryRoki into a Next.js App Router site so AI-generated articles publish to your blog automatically. Written as end-to-end instructions your AI coding agent can follow."
+---
+
+TryRoki has **no SDK and no npm package to install**. When it publishes an article it sends the finished content to a webhook endpoint you host — a single HTTP `POST` with a JSON body, authenticated by a shared secret you choose. This guide walks an AI coding agent through wiring that endpoint into a Next.js **App Router** project and rendering the articles as a blog.
+
+## One-prompt setup
+
+Paste this into your AI coding agent (Cursor, Claude Code, v0, Windsurf, …) inside your Next.js project. It has everything the agent needs to do the whole integration.
+
+```text prompt
+I want to auto-publish blog articles from an external service called TryRoki into my Next.js App Router site.
+
+TryRoki has no SDK or npm package. It sends each finished article to a webhook endpoint I host: one HTTP POST with a JSON body, authenticated by a shared secret I set as a custom "Authorization: Bearer <secret>" header on the webhook.
+
+Read https://tryroki.com/docs/nextjs and https://tryroki.com/docs/webhooks, then:
+1. Add a TRYROKI_WEBHOOK_SECRET environment variable.
+2. Create an App Router route handler at app/api/tryroki/route.ts that verifies the Authorization header against TRYROKI_WEBHOOK_SECRET, parses the article payload, and upserts it by its `id` field (so re-deliveries don't duplicate) into my database — or scaffold a store if I don't have one.
+3. Render the articles as a blog at /blog and /blog/[slug]: use content_html for the body and inject each article's json_ld into the page.
+4. Return an HTTP 2xx within 15 seconds.
+
+Then give me the public webhook URL (https://<my-domain>/api/tryroki) so I can paste it into TryRoki → Integrations → Webhooks.
+```
+
+The rest of this page is the same integration done by hand, in case you'd rather follow the steps yourself.
+
+## What you're building
+
+<CardGroup cols={3}>
+  <Card title="A shared secret" icon="key">
+    An env var both TryRoki and your endpoint know, so you can reject anyone else.
+  </Card>
+  <Card title="A webhook route" icon="webhook">
+    An App Router route handler at `/api/tryroki` that receives and stores each article.
+  </Card>
+  <Card title="A blog" icon="newspaper">
+    `/blog` and `/blog/[slug]` pages that render the articles TryRoki sends.
+  </Card>
+</CardGroup>
+
+## Prerequisites
+
+- A Next.js project using the **App Router** (`app/` directory).
+- A [TryRoki](https://tryroki.com) account.
+- A publicly reachable HTTPS URL for your site (your production deploy, or a tunnel like `ngrok`/`cloudflared` for local testing).
+
+<Note>
+  There is no API key to request and nothing to `npm install`. The only credential is a secret **you** generate — it goes in your app's env and in the webhook's custom headers.
+</Note>
+
+## Step 1 — Add a shared secret
+
+Generate a long random string and add it to your environment. Anything unguessable works:
+
+```bash terminal
+# Generate a secret
+openssl rand -hex 32
+```
+
+```bash .env.local
+TRYROKI_WEBHOOK_SECRET=paste-the-long-random-string-here
+```
+
+You'll paste this same value into the TryRoki dashboard in Step 5.
+
+## Step 2 — Create the webhook route handler
+
+Create `app/api/tryroki/route.ts`. It authenticates the request, parses the article, stores it, and responds `2xx` quickly.
+
+```ts app/api/tryroki/route.ts
+import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
+import { upsertArticle, slugify } from "@/lib/articles";
+
+export async function POST(req: Request) {
+  // 1. Authenticate — TryRoki sends your secret as a custom header.
+  const auth = req.headers.get("authorization");
+  if (auth !== `Bearer ${process.env.TRYROKI_WEBHOOK_SECRET}`) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // 2. Parse the article payload.
+  const article = await req.json();
+
+  // 3. Persist. Upsert by `id` so re-deliveries and `article.updated`
+  //    events update the post in place instead of duplicating it.
+  await upsertArticle(article);
+
+  // 4. Refresh the affected pages (App Router cache).
+  revalidatePath("/blog");
+  revalidatePath(`/blog/${slugify(article.title)}`);
+
+  // 5. Respond 2xx within 15s. Defer any heavy work to a background queue.
+  return NextResponse.json({ ok: true });
+}
+```
+
+<Warning>
+  Your endpoint has **15 seconds** to return a `2xx`, and TryRoki does **not** retry failed deliveries. Keep the handler fast — offload image downloads, re-indexing, or notifications to a queue and respond immediately.
+</Warning>
+
+## Step 3 — Store the article
+
+Create `app/lib/articles.ts`. This example uses an in-memory `Map` so you can run it instantly — **swap the bodies for your real database** (Prisma, Drizzle, Postgres, a CMS, etc.) before deploying.
+
+```ts app/lib/articles.ts
+// The exact shape TryRoki POSTs. See /docs/webhooks for the full reference.
+export type Article = {
+  id: number;
+  title: string;
+  target_keyword: string;
+  meta_description: string;
+  publish_status: string;
+  publish_date: string | null;
+  article_type: string;
+  content: string; // Markdown source
+  content_html: string; // pre-rendered HTML
+  json_ld: unknown[]; // structured data blocks
+  image: string | null; // cover image URL
+};
+
+// Demo store — replace with your database.
+const store = new Map<number, Article>();
+
+export async function upsertArticle(article: Article) {
+  store.set(article.id, article);
+}
+
+export async function listArticles() {
+  return [...store.values()].sort((a, b) =>
+    (b.publish_date ?? "").localeCompare(a.publish_date ?? ""),
+  );
+}
+
+export async function getArticle(slug: string) {
+  return [...store.values()].find((a) => slugify(a.title) === slug) ?? null;
+}
+
+export function slugify(title: string) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+```
+
+<Warning>
+  The in-memory `Map` resets on every serverless cold start and isn't shared across instances. It's only for a first local test — persist to a real database in production.
+</Warning>
+
+## Step 4 — Render the blog
+
+TryRoki sends `content_html` already rendered, so the article pages are thin.
+
+```tsx app/blog/page.tsx
+import Link from "next/link";
+import { listArticles, slugify } from "@/lib/articles";
+
+export default async function BlogIndex() {
+  const articles = await listArticles();
+
+  return (
+    <main>
+      <h1>Blog</h1>
+      <ul>
+        {articles.map((a) => (
+          <li key={a.id}>
+            <Link href={`/blog/${slugify(a.title)}`}>{a.title}</Link>
+            <p>{a.meta_description}</p>
+          </li>
+        ))}
+      </ul>
+    </main>
+  );
+}
+```
+
+```tsx app/blog/[slug]/page.tsx
+import { notFound } from "next/navigation";
+import { getArticle } from "@/lib/articles";
+
+// In the current App Router, `params` is a promise.
+export default async function ArticlePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const article = await getArticle(slug);
+  if (!article) notFound();
+
+  return (
+    <article>
+      {article.image && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={article.image} alt={article.title} />
+      )}
+      <h1>{article.title}</h1>
+
+      {/* content_html is pre-rendered by TryRoki */}
+      <div dangerouslySetInnerHTML={{ __html: article.content_html }} />
+
+      {/* Structured data for SEO */}
+      {article.json_ld?.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(article.json_ld) }}
+        />
+      )}
+    </article>
+  );
+}
+```
+
+<Note>
+  `content_html` comes from a source you authenticate with your secret, so rendering it directly is fine. If you also expose user-submitted content, sanitize HTML with a library such as `rehype-sanitize` or `DOMPurify`.
+</Note>
+
+## Step 5 — Register the webhook in TryRoki
+
+<Steps>
+  <Step title="Open the webhook settings">
+    In the TryRoki dashboard go to **Integrations → Webhooks** and click **Add webhook**.
+  </Step>
+  <Step title="Set the endpoint URL">
+    Enter your route's public URL, e.g. `https://yourdomain.com/api/tryroki`.
+  </Step>
+  <Step title="Choose events">
+    Tick **On create** (`article.created`) and **On update** (`article.updated`).
+  </Step>
+  <Step title="Add the secret header">
+    In **Custom headers**, paste a JSON object with your secret:
+
+    ```json
+    { "Authorization": "Bearer paste-the-long-random-string-here" }
+    ```
+
+    This must match `TRYROKI_WEBHOOK_SECRET` from Step 1 exactly.
+  </Step>
+  <Step title="Save">
+    Save the webhook. TryRoki will POST to your endpoint on the next publish.
+  </Step>
+</Steps>
+
+## Step 6 — Test it
+
+Simulate a delivery with `curl` (replace the domain and use the same secret):
+
+```bash terminal
+curl -X POST https://yourdomain.com/api/tryroki \
+  -H "Authorization: Bearer $TRYROKI_WEBHOOK_SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "event_type": "article.created",
+    "id": 1,
+    "title": "Hello from TryRoki",
+    "target_keyword": "hello",
+    "meta_description": "My first automated article.",
+    "publish_status": "published",
+    "publish_date": null,
+    "article_type": "Guide - Howto",
+    "content": "## Hello",
+    "content_html": "<h2>Hello</h2><p>It works.</p>",
+    "json_ld": [],
+    "image": null
+  }'
+```
+
+Expect `{"ok":true}`. Open `/blog` and you'll see the post; `/blog/hello-from-tryroki` renders the body. A `401` means the `Authorization` header doesn't match your env secret.
+
+## Payload reference
+
+The `POST` body is identical for `article.created` and `article.updated`. Full field table, event semantics, delivery timeouts, and security notes live in the [webhook documentation](/webhooks/overview).
+
+## Production checklist
+
+- **Idempotency** — upsert by `id`; the same article can arrive more than once.
+- **HTTPS only** — the secret rides in a header; never expose the endpoint over plain HTTP.
+- **Fast response** — return `2xx` in under 15s; queue heavy work.
+- **Real storage** — replace the in-memory demo store with your database.
+- **Revalidation** — call `revalidatePath` (shown above) or use on-demand revalidation so new posts appear immediately.
