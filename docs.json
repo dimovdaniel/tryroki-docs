@@ -25,6 +25,12 @@
         ]
       },
       {
+        "group": "Sharing access",
+        "pages": [
+          "google-tag-manager"
+        ]
+      },
+      {
         "group": "Webhooks",
         "pages": [
           "webhooks/overview",
