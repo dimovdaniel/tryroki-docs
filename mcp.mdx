@@ -1,0 +1,145 @@
+---
+title: "MCP"
+description: "Connect Claude, ChatGPT, Cursor, VS Code, and other agents to TryRoki over MCP."
+---
+
+Get your server URL, API key, and connect token from the [TryRoki MCP integration page](https://app.tryroki.com/contentgen/integrations/mcp). Use `YOUR_API_KEY` in the examples below until you paste your real key.
+
+## Server URL
+
+```text
+https://app.tryroki.com/mcp/articles
+```
+
+## Setup guides
+
+<Tabs>
+  <Tab title="Claude">
+    Use the connector settings in Claude for remote MCP servers.
+
+    <Steps>
+      <Step title="Open connectors">
+        In claude.ai or Claude Desktop, open **Settings -> Connectors**.
+      </Step>
+      <Step title="Add a custom connector">
+        Click **Add custom connector** and enter the server URL.
+      </Step>
+      <Step title="Finish setup">
+        Save the connector, then connect it in the conversation where you want Roki AI article tools available.
+      </Step>
+    </Steps>
+
+    Claude Desktop does not connect to remote MCP servers through `claude_desktop_config.json`. That file is for local servers that Claude Desktop starts on your machine. Add TryRoki through **Settings -> Connectors** instead.
+  </Tab>
+
+  <Tab title="Claude Code">
+    Run this outside a `claude` session:
+
+    ```bash
+    claude mcp add --transport http roki https://app.tryroki.com/mcp/articles
+    ```
+
+    Then run:
+
+    ```bash
+    claude mcp list
+    ```
+
+    If Claude Code reports that authentication is needed, open the MCP auth flow from Claude Code and sign in.
+  </Tab>
+
+  <Tab title="Cursor / VS Code">
+    For Cursor, add this to `.cursor/mcp.json`:
+
+    ```json
+    {
+      "mcpServers": {
+        "tryroki": {
+          "url": "https://app.tryroki.com/mcp/articles",
+          "headers": {
+            "Authorization": "Bearer YOUR_API_KEY"
+          }
+        }
+      }
+    }
+    ```
+
+    <Card title="Install in Cursor" icon="cursor" href="cursor://anysphere.cursor-deeplink/mcp/install?name=tryroki&config=eyJ1cmwiOiJodHRwczovL2FwcC50cnlyb2tpLmNvbS9tY3AvYXJ0aWNsZXMiLCJoZWFkZXJzIjp7IkF1dGhvcml6YXRpb24iOiJCZWFyZXIgWU9VUl9BUElfS0VZIn19">
+      Opens Cursor with the TryRoki server URL and `YOUR_API_KEY` placeholder prefilled.
+    </Card>
+
+    For VS Code, create or update `.vscode/mcp.json`:
+
+    ```json
+    {
+      "servers": {
+        "tryroki": {
+          "type": "http",
+          "url": "https://app.tryroki.com/mcp/articles",
+          "headers": {
+            "Authorization": "Bearer YOUR_API_KEY"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="ChatGPT">
+    Business, Enterprise, and Edu workspaces may need an admin to enable custom MCP connectors before you can create one.
+
+    <Steps>
+      <Step title="Enable developer mode">
+        Open **Settings -> Apps -> Advanced Settings** and turn on **Developer mode**. Workspace admins can also enable it from workspace app settings.
+      </Step>
+      <Step title="Create a connector">
+        Open **Settings -> Apps** and click **Create**.
+      </Step>
+      <Step title="Enter the TryRoki server">
+        Add the server URL `https://app.tryroki.com/mcp/articles`.
+      </Step>
+      <Step title="Choose authentication">
+        Use OAuth when your workspace has it enabled. If you are using a connect-token URL from the TryRoki dashboard, choose no authentication.
+      </Step>
+      <Step title="Test and save">
+        Complete the test call, save the connector, and enable it in the chat where you want to use TryRoki.
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="Other agents">
+    Use this generic `mcp.json` shape for clients that accept header-authenticated remote MCP servers:
+
+    ```json
+    {
+      "mcpServers": {
+        "tryroki": {
+          "url": "https://app.tryroki.com/mcp/articles",
+          "headers": {
+            "Authorization": "Bearer YOUR_API_KEY"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Troubleshooting
+
+| Symptom | Check |
+| --- | --- |
+| Connection fails outright | Confirm the URL is exactly `https://app.tryroki.com/mcp/articles`. If your client uses an API key, confirm the header is `Authorization: Bearer YOUR_API_KEY` with your real key. |
+| OAuth completes but no tools appear | Remove and reconnect the MCP connector so the client fetches the tool list again. Confirm you are signing in to the same TryRoki workspace that owns the articles. |
+| Tools appear but the model never calls them | Ask the model to use the TryRoki connector by name for the first request. In clients with per-tool approvals, approve the tool call when prompted. |
+
+## Health check
+
+Support may ask you to call the authenticated health endpoint:
+
+```bash
+curl https://app.tryroki.com/mcp/health \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+It returns the server version, spec revision, tool count, and whether your workspace has completed a successful MCP call.
