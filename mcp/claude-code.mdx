@@ -1,0 +1,38 @@
+---
+title: "Install TryRoki MCP in Claude Code"
+description: "Add TryRoki as a remote HTTP MCP server from the Claude Code CLI."
+---
+
+Use this guide for Claude Code. Get your credentials from the [TryRoki MCP integration page](https://app.tryroki.com/contentgen/integrations/mcp) before you start.
+
+## Install from the terminal
+
+Run this outside a Claude Code session:
+
+```bash
+claude mcp add --transport http roki https://app.tryroki.com/mcp/articles
+```
+
+Then list your MCP servers:
+
+```bash
+claude mcp list
+```
+
+## Authenticate
+
+If Claude Code reports that authentication is needed, follow the auth prompt that Claude Code opens. Sign in to TryRoki and approve access.
+
+## Check that it worked
+
+Start Claude Code and ask:
+
+```text
+Use the roki MCP server to list my articles.
+```
+
+If Claude Code finds TryRoki tools or asks for permission to use them, the server is installed.
+
+## Official reference
+
+- [Anthropic: Connect Claude Code to tools via MCP](https://docs.anthropic.com/en/docs/claude-code/mcp)

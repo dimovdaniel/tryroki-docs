@@ -1,0 +1,54 @@
+---
+title: "Install TryRoki MCP in Claude"
+description: "Connect claude.ai or Claude Desktop to TryRoki with Claude's connector settings."
+---
+
+Use this guide for claude.ai and Claude Desktop. Get your credentials from the [TryRoki MCP integration page](https://app.tryroki.com/contentgen/integrations/mcp) before you start.
+
+## Before you start
+
+- Copy the server URL: `https://app.tryroki.com/mcp/articles`
+- If your TryRoki workspace uses OAuth, you only need the server URL.
+- If you use a connect token, copy the full connect-token URL from the TryRoki dashboard.
+
+## Install in Claude
+
+<Steps>
+  <Step title="Open connector settings">
+    In Claude, open **Settings -> Connectors**. In some accounts this appears under **Customize -> Connectors**.
+  </Step>
+  <Step title="Add a custom connector">
+    Click **+** or **Add**, then choose **Add custom connector**.
+  </Step>
+  <Step title="Enter the TryRoki URL">
+    Paste `https://app.tryroki.com/mcp/articles`. If you are using a connect token, paste the full connect-token URL from TryRoki instead.
+  </Step>
+  <Step title="Finish the connection">
+    Save the connector. If Claude opens an authorization screen, sign in and approve access.
+  </Step>
+  <Step title="Use it in a chat">
+    Open a chat, enable the TryRoki connector if Claude asks, and request an article action such as listing your TryRoki articles.
+  </Step>
+</Steps>
+
+## Team and Enterprise workspaces
+
+If your Claude workspace is managed by an organization, an owner may need to add the custom connector first from organization connector settings. After that, members can connect it from their own connector settings.
+
+## Claude Desktop note
+
+Claude Desktop does not connect to remote MCP servers through `claude_desktop_config.json`. That file is for local MCP servers that Claude Desktop starts on your computer. Add TryRoki through **Settings -> Connectors** instead.
+
+## Check that it worked
+
+Ask Claude:
+
+```text
+Use TryRoki to list my latest articles.
+```
+
+If Claude shows or asks permission to use TryRoki article tools, the connector is installed.
+
+## Official reference
+
+- [Anthropic: custom connectors using remote MCP](https://support.anthropic.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp)

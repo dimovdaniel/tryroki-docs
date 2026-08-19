@@ -1,0 +1,53 @@
+---
+title: "Troubleshoot TryRoki MCP"
+description: "Fix common TryRoki MCP installation and connection problems."
+---
+
+Use this page when your AI app cannot connect to TryRoki or can connect but does not use the tools.
+
+## Connection fails outright
+
+Check these first:
+
+- The server URL is exactly `https://app.tryroki.com/mcp/articles`.
+- If you use an API key, the header is exactly `Authorization: Bearer YOUR_API_KEY`.
+- You replaced `YOUR_API_KEY` with the API key from the [TryRoki MCP integration page](https://app.tryroki.com/contentgen/integrations/mcp).
+- If you use a connect-token URL, you copied the full URL from TryRoki.
+- Your network or company firewall allows the AI app to reach `https://app.tryroki.com`.
+
+## OAuth completes, but no tools appear
+
+Try these steps:
+
+<Steps>
+  <Step title="Reconnect the app">
+    Remove the TryRoki connector from your AI app, then add it again.
+  </Step>
+  <Step title="Scan tools again">
+    In ChatGPT, run **Scan Tools** again after OAuth finishes. In other clients, restart or refresh the MCP server.
+  </Step>
+  <Step title="Check the workspace">
+    Make sure you signed in to the TryRoki account that owns the workspace you want to use.
+  </Step>
+</Steps>
+
+## Tools appear, but the model never calls them
+
+Ask directly for TryRoki by name on the first request:
+
+```text
+Use TryRoki to create a draft article about our latest product update.
+```
+
+If the client asks for tool approval, approve the TryRoki tool call. Some apps do not call newly installed tools until you mention the tool or connector by name.
+
+## Health check
+
+Support may ask you to test the health endpoint:
+
+```bash
+curl https://app.tryroki.com/mcp/health \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+It returns the server version, spec revision, tool count, and whether your workspace has completed a successful MCP call.
