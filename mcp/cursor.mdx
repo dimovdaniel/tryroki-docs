@@ -1,0 +1,50 @@
+---
+title: "Install TryRoki MCP in Cursor"
+description: "Add TryRoki to Cursor with an install link or a project mcp.json file."
+---
+
+Use this guide for Cursor. Get your API key from the [TryRoki MCP integration page](https://app.tryroki.com/contentgen/integrations/mcp) before you start.
+
+## Fast install
+
+<Card title="Install TryRoki in Cursor" icon="cursor" href="cursor://anysphere.cursor-deeplink/mcp/install?name=tryroki&config=eyJ1cmwiOiJodHRwczovL2FwcC50cnlyb2tpLmNvbS9tY3AvYXJ0aWNsZXMiLCJoZWFkZXJzIjp7IkF1dGhvcml6YXRpb24iOiJCZWFyZXIgWU9VUl9BUElfS0VZIn19">
+  Open Cursor and install the TryRoki MCP server with `YOUR_API_KEY` as the placeholder.
+</Card>
+
+After Cursor opens, replace `YOUR_API_KEY` with the API key from TryRoki.
+
+## Manual install
+
+Create or open `.cursor/mcp.json` in your project.
+
+Paste this configuration:
+
+```json
+{
+  "mcpServers": {
+    "tryroki": {
+      "url": "https://app.tryroki.com/mcp/articles",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+Replace `YOUR_API_KEY` with your real TryRoki API key, then save the file.
+
+## Check that it worked
+
+Open Cursor settings for MCP tools and confirm TryRoki appears. Then ask Cursor Agent:
+
+```text
+Use TryRoki to list my articles.
+```
+
+If Cursor asks permission to run a TryRoki tool, approve it.
+
+## Official references
+
+- [Cursor: Model Context Protocol](https://cursor.com/docs/mcp)
+- [Cursor: MCP install links](https://cursor.com/docs/mcp/install-links)

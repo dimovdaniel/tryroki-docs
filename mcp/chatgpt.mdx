@@ -1,0 +1,56 @@
+---
+title: "Install TryRoki MCP in ChatGPT"
+description: "Create a custom MCP app in ChatGPT developer mode and connect it to TryRoki."
+---
+
+Use this guide for ChatGPT Business, Enterprise, and Edu workspaces that can create custom MCP apps. Get your credentials from the [TryRoki MCP integration page](https://app.tryroki.com/contentgen/integrations/mcp) before you start.
+
+## Before you start
+
+- Copy the server URL: `https://app.tryroki.com/mcp/articles`
+- Use OAuth if your TryRoki workspace has it enabled.
+- If you are using a connect token, copy the full connect-token URL from TryRoki.
+
+<Note>
+  Business, Enterprise, and Edu workspaces may need an admin or owner to enable developer mode or custom MCP apps before members can create one.
+</Note>
+
+## Install in ChatGPT
+
+<Steps>
+  <Step title="Open app settings">
+    In ChatGPT web, open **Settings -> Apps**.
+  </Step>
+  <Step title="Enable developer mode">
+    Open **Advanced Settings** and turn on **Developer mode**. If you do not see the toggle, ask a workspace admin to enable access.
+  </Step>
+  <Step title="Create a custom app">
+    Go back to **Settings -> Apps** and click **Create**. Admins and owners may also create it from **Workspace settings -> Apps -> Create**.
+  </Step>
+  <Step title="Enter the TryRoki server">
+    Add the server URL `https://app.tryroki.com/mcp/articles`. If you are using a connect token, paste the full connect-token URL from TryRoki instead.
+  </Step>
+  <Step title="Choose authentication">
+    Choose OAuth when available. If you pasted a connect-token URL, choose no authentication because the token is already in the URL.
+  </Step>
+  <Step title="Scan tools">
+    Click **Scan Tools**. If OAuth starts, finish the authorization flow and wait for the tool scan to complete.
+  </Step>
+  <Step title="Create and enable the app">
+    Click **Create**, then enable the TryRoki app for the chat where you want to use it.
+  </Step>
+</Steps>
+
+## Check that it worked
+
+Ask ChatGPT:
+
+```text
+Use TryRoki to list my articles.
+```
+
+If ChatGPT shows TryRoki tool activity or asks for tool-call approval, the app is connected.
+
+## Official reference
+
+- [OpenAI: Developer mode and MCP apps in ChatGPT](https://help.openai.com/en/articles/12584461-developer-mode-and-mcp-apps-in-chatgpt)

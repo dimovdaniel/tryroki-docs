@@ -1,0 +1,44 @@
+---
+title: "Install TryRoki MCP in other agents"
+description: "Use the generic remote MCP configuration for AI apps that support HTTP MCP servers."
+---
+
+Use this guide for MCP clients that accept a remote HTTP MCP server and custom request headers. Get your API key from the [TryRoki MCP integration page](https://app.tryroki.com/contentgen/integrations/mcp) before you start.
+
+## Generic mcp.json
+
+Paste this configuration into your agent's MCP settings:
+
+```json
+{
+  "mcpServers": {
+    "tryroki": {
+      "url": "https://app.tryroki.com/mcp/articles",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+Replace `YOUR_API_KEY` with your real TryRoki API key.
+
+## If your client uses another shape
+
+Some clients use `servers` instead of `mcpServers`, or require `"type": "http"`. In that case, keep the same URL and authorization header:
+
+```text
+URL: https://app.tryroki.com/mcp/articles
+Authorization: Bearer YOUR_API_KEY
+```
+
+## Check that it worked
+
+Ask your agent:
+
+```text
+Use TryRoki to list my articles.
+```
+
+If the agent can see TryRoki tools and list articles, the MCP server is connected.

@@ -1,0 +1,48 @@
+---
+title: "Install the TryRoki MCP server"
+description: "Choose your AI app and connect it to TryRoki so it can create and update articles."
+---
+
+TryRoki's MCP server lets AI apps work with your Roki AI articles. After you connect it, the AI app can create new imported articles, update articles it previously imported, search your article list, and fetch article content.
+
+Start in the [TryRoki MCP integration page](https://app.tryroki.com/contentgen/integrations/mcp). It shows your server URL, API key, connect token, and ready-to-paste `mcp.json`.
+
+## What you need
+
+- A TryRoki account with access to the workspace you want to connect.
+- The server URL: `https://app.tryroki.com/mcp/articles`
+- Your API key or connect token from the TryRoki dashboard.
+- The AI app you want to connect.
+
+<Warning>
+  Treat your API key and connect token like passwords. Anyone with either credential can use your workspace's MCP article tools.
+</Warning>
+
+## Pick your guide
+
+<CardGroup cols={2}>
+  <Card title="Claude and Claude Desktop" icon="sparkles" href="/mcp/claude">
+    Use Claude's connector settings to add TryRoki as a remote MCP server.
+  </Card>
+  <Card title="ChatGPT" icon="message-circle" href="/mcp/chatgpt">
+    Create a custom MCP app in developer mode and scan TryRoki's tools.
+  </Card>
+  <Card title="Cursor" icon="cursor" href="/mcp/cursor">
+    Install with the Cursor deeplink or paste a project `mcp.json`.
+  </Card>
+  <Card title="VS Code" icon="code" href="/mcp/vscode">
+    Add TryRoki to Copilot Chat through `.vscode/mcp.json`.
+  </Card>
+  <Card title="Claude Code" icon="terminal" href="/mcp/claude-code">
+    Add the remote HTTP server from your terminal.
+  </Card>
+  <Card title="Other agents" icon="bot" href="/mcp/other-agents">
+    Use the generic MCP JSON for tools that support remote HTTP MCP servers.
+  </Card>
+</CardGroup>
+
+## When setup is done
+
+Open your AI app and ask it to use TryRoki to list your articles. If it can see the TryRoki tools and list articles from your workspace, the connection is working.
+
+If setup fails, use the [MCP troubleshooting guide](/mcp/troubleshooting).

@@ -1,0 +1,50 @@
+---
+title: "Install TryRoki MCP in VS Code"
+description: "Add TryRoki to VS Code and GitHub Copilot Chat with mcp.json."
+---
+
+Use this guide for Visual Studio Code with Copilot Chat. Get your API key from the [TryRoki MCP integration page](https://app.tryroki.com/contentgen/integrations/mcp) before you start.
+
+## Install in your project
+
+Create or open `.vscode/mcp.json` in your project.
+
+Paste this configuration:
+
+```json
+{
+  "servers": {
+    "tryroki": {
+      "type": "http",
+      "url": "https://app.tryroki.com/mcp/articles",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+Replace `YOUR_API_KEY` with your real TryRoki API key, then save the file.
+
+## Install for all projects
+
+If you want TryRoki available across projects, run **MCP: Open User Configuration** from the Command Palette and add the same `tryroki` server to that user-level file.
+
+## Start the server
+
+When VS Code sees the new MCP configuration, it asks whether you trust the server. Confirm trust so VS Code can discover the TryRoki tools.
+
+## Check that it worked
+
+Open Copilot Chat and ask:
+
+```text
+Use TryRoki to list my articles.
+```
+
+If VS Code shows TryRoki tools or asks permission to call one, the setup is working.
+
+## Official reference
+
+- [VS Code: Add and manage MCP servers](https://code.visualstudio.com/docs/agent-customization/mcp-servers)
