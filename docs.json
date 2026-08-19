@@ -21,7 +21,14 @@
         "pages": [
           "wordpress",
           "lovable",
-          "nextjs"
+          "nextjs",
+          "mcp"
+        ]
+      },
+      {
+        "group": "Sharing access",
+        "pages": [
+          "google-tag-manager"
         ]
       },
       {

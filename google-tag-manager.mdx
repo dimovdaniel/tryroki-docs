@@ -1,0 +1,117 @@
+---
+title: "Share Google Tag Manager access"
+description: "Invite TryRoki to your Google Tag Manager account so we can manage tags and tracking on your behalf — at the account or container level."
+---
+
+## Overview
+
+Google Tag Manager (GTM) lets you add and update tracking tags — analytics, conversion pixels, remarketing scripts — on your website without editing code every time. Instead of sharing your Google password, you invite people to your account and give each one a specific permission level.
+
+To let TryRoki set up and maintain tracking for you, add our email address as a user on your GTM account. This guide walks through the permission levels and the exact steps to send the invite.
+
+<Note>
+  Ask your TryRoki contact which email address to invite, or email [seo@tryroki.com](mailto:seo@tryroki.com). Never share your Google login — invitations give access without exposing your credentials.
+</Note>
+
+## Permission levels
+
+GTM has two layers of permissions. **Account permissions** control who can manage the account itself, and **container permissions** control what someone can do inside each container (usually one container per website).
+
+### Account permissions
+
+- **User** — can view account settings and activity but cannot manage other users. This is the default.
+- **Administrator** — full control of the account, including creating containers and managing users. Administrators automatically get read access to every container.
+
+### Container permissions
+
+Within a container you can grant one of the following, from lowest to highest:
+
+1. **No access** — the container is hidden from the user.
+2. **Read** — view tags, triggers, and variables, but change nothing.
+3. **Edit** — create workspaces and edit items, but not publish.
+4. **Approve** — create versions, but not publish.
+5. **Publish** — the highest level: read, edit, approve, and publish changes live.
+
+<Tip>
+  For TryRoki to create and publish tags for you, grant **Publish** on the relevant container. If you prefer to review changes before they go live, grant **Approve** and publish them yourself.
+</Tip>
+
+## Grant access at the account level
+
+Use this when you want to give access to the whole account and all of its containers at once.
+
+<Steps>
+  <Step title="Open the Admin tab">
+    Go to [tagmanager.google.com](https://tagmanager.google.com) and sign in. Select the account you want to share, then open the **Admin** tab.
+
+    <Frame caption="The Admin tab in Google Tag Manager.">
+      <img src="/images/google-tag-manager/admin-tab.png" alt="Finding the Admin tab in Google Tag Manager" />
+    </Frame>
+  </Step>
+  <Step title="Open User Management">
+    In the **Account** column on the left, click **User Management**.
+
+    <Frame caption="User Management under the Account column.">
+      <img src="/images/google-tag-manager/user-management-account.png" alt="User Management under the account level in Google Tag Manager" />
+    </Frame>
+  </Step>
+  <Step title="Add a new user">
+    Click the blue **+** button in the top-right corner, then choose **Add users**.
+
+    <Frame caption="Adding a user at the account level.">
+      <img src="/images/google-tag-manager/add-user-account.png" alt="Add a user to Google Tag Manager on the account level" />
+    </Frame>
+  </Step>
+  <Step title="Set permissions and invite">
+    Enter the email address, choose the **Account permissions** (User or Administrator), optionally set **Container permissions**, then click **Invite**.
+
+    <Frame caption="Setting permissions for the new user, then sending the invite.">
+      <img src="/images/google-tag-manager/permissions-account.png" alt="Setting the permissions for the new user in Google Tag Manager" />
+    </Frame>
+  </Step>
+</Steps>
+
+The invited user receives an email and appears in your user list once they accept.
+
+## Grant access at the container level
+
+Use this when you want to share a single container without giving access to the rest of the account.
+
+<Steps>
+  <Step title="Open the Admin tab">
+    Go to [tagmanager.google.com](https://tagmanager.google.com), sign in, and open the **Admin** tab for the container you want to share.
+  </Step>
+  <Step title="Open User Management">
+    In the **Container** column, click **User Management**.
+
+    <Frame caption="User Management under the Container column.">
+      <img src="/images/google-tag-manager/user-management-container.png" alt="User Management under the container level in Google Tag Manager" />
+    </Frame>
+  </Step>
+  <Step title="Add a new user">
+    Click the blue **+** button in the top-right corner, then choose **Add users**.
+
+    <Frame caption="Adding a user at the container level.">
+      <img src="/images/google-tag-manager/add-user-container.png" alt="Add a user to Google Tag Manager on the container level" />
+    </Frame>
+  </Step>
+  <Step title="Set container permissions and invite">
+    Enter the email address, select the container permission level (Read, Edit, Approve, or Publish), then click **Invite**.
+
+    <Frame caption="Setting container-level permissions for the new user.">
+      <img src="/images/google-tag-manager/permissions-container.png" alt="Setting the container-level permissions for the new user in Google Tag Manager" />
+    </Frame>
+  </Step>
+</Steps>
+
+## Edit or remove access
+
+To change or revoke access later, open **User Management** at the account or container level, click the user (or the three-dot menu next to them), and update their permission level or remove them entirely.
+
+<Note>
+  Google Tag Manager has no "request access" flow — a partner cannot ask to join your account. The account owner must always send the invitation using the steps above.
+</Note>
+
+## What TryRoki needs
+
+Once you have invited us, share the account with the email you were given and grant **Publish** on the container for your website. That is enough for TryRoki to manage your tags end to end. If anything looks unclear, reach out at [seo@tryroki.com](mailto:seo@tryroki.com) and we will confirm the exact permissions we need.
