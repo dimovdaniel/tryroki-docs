@@ -21,8 +21,20 @@
         "pages": [
           "wordpress",
           "lovable",
-          "nextjs",
-          "mcp"
+          "nextjs"
+        ]
+      },
+      {
+        "group": "MCP setup guides",
+        "pages": [
+          "mcp/index",
+          "mcp/claude",
+          "mcp/chatgpt",
+          "mcp/cursor",
+          "mcp/vscode",
+          "mcp/claude-code",
+          "mcp/other-agents",
+          "mcp/troubleshooting"
         ]
       },
       {
