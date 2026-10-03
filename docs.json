@@ -25,22 +25,10 @@
         ]
       },
       {
-        "group": "MCP setup guides",
+        "group": "AI Agents",
         "pages": [
-          "mcp/index",
           "mcp/claude",
-          "mcp/chatgpt",
-          "mcp/cursor",
-          "mcp/vscode",
-          "mcp/claude-code",
-          "mcp/other-agents",
-          "mcp/troubleshooting"
-        ]
-      },
-      {
-        "group": "Sharing access",
-        "pages": [
-          "google-tag-manager"
+          "mcp/chatgpt"
         ]
       },
       {
@@ -104,5 +92,39 @@
       "x": "https://x.com/dimovdaniel"
     }
   },
-  "description": "Learn how to integrate TryRoki.com with your workflow"
+  "description": "Learn how to integrate TryRoki.com with your workflow",
+  "redirects": [
+    {
+      "source": "/mcp",
+      "destination": "/mcp/claude"
+    },
+    {
+      "source": "/mcp/index",
+      "destination": "/mcp/claude"
+    },
+    {
+      "source": "/mcp/cursor",
+      "destination": "/mcp/claude"
+    },
+    {
+      "source": "/mcp/vscode",
+      "destination": "/mcp/claude"
+    },
+    {
+      "source": "/mcp/claude-code",
+      "destination": "/mcp/claude"
+    },
+    {
+      "source": "/mcp/other-agents",
+      "destination": "/mcp/claude"
+    },
+    {
+      "source": "/mcp/troubleshooting",
+      "destination": "/mcp/claude"
+    },
+    {
+      "source": "/google-tag-manager",
+      "destination": "/"
+    }
+  ]
 }
