@@ -3,8 +3,8 @@ title: "WordPress Integration"
 description: "Automatically publish TryRoki articles to your WordPress site using the Tryroki plugin."
 ---
 
-<Card title="Download the TryRoki WordPress Plugin" icon="download" href="/tryroki.zip">
-  Version 1.1.0 — requires WordPress 6.4+ and PHP 8.0+. Download `tryroki.zip`.
+<Card title="Get Roki on WordPress.org" icon="wordpress" href="https://wordpress.org/plugins/tryroki/">
+  The official plugin is listed in the WordPress plugin directory as **Roki – SEO Autopilot & AI Content Writer**. Version 1.1.0 — requires WordPress 6.4+ and PHP 8.0+.
 </Card>
 
 ## Overview
@@ -15,21 +15,25 @@ The plugin also downloads and localises any featured image into your WordPress m
 
 ## Step 1 — Install the plugin
 
-Download the **tryroki.zip** file using the button above, then install it on your WordPress site:
+Install the plugin straight from the WordPress plugin directory:
 
 <Steps>
   <Step title="Open the plugin installer">
     In your WordPress admin, go to **Plugins → Add New Plugin**.
   </Step>
-  <Step title="Upload the zip">
-    Click **Upload Plugin** and select the downloaded `tryroki.zip` file.
+  <Step title="Search for Roki">
+    Search for **tryroki** and find **Roki – SEO Autopilot & AI Content Writer**.
   </Step>
   <Step title="Install and activate">
-    Click **Install Now**, then **Activate Plugin**.
+    Click **Install Now**, then **Activate**.
   </Step>
 </Steps>
 
-After activation the plugin registers the REST API endpoints TryRoki needs and creates a settings page under **Settings → Tryroki** in your WordPress admin.
+After activation the plugin registers the REST API endpoints TryRoki needs and adds a **Tryroki** menu to your WordPress admin, with **Home** and **Manage** pages. WordPress also notifies you about plugin updates and lets you turn on auto-updates.
+
+<Accordion title="Install manually from a zip file">
+  If you can't install from the directory (for example, on a locked-down host), download the zip from the [plugin page on WordPress.org](https://wordpress.org/plugins/tryroki/) or [here](/tryroki.zip). In your WordPress admin, go to **Plugins → Add New Plugin → Upload Plugin**, select `tryroki.zip`, then click **Install Now** and **Activate Plugin**.
+</Accordion>
 
 ## Step 2 — Connect to TryRoki
 
@@ -46,7 +50,7 @@ Open the TryRoki dashboard and go to **Integrations → WordPress**. Make sure *
     Copy the **Plugin Secret Key** shown in the TryRoki dashboard.
   </Step>
   <Step title="Paste the key into WordPress">
-    In your WordPress admin, go to **Settings → Tryroki** and paste the key into the **API Key** field. Save.
+    In your WordPress admin, go to **Tryroki → Manage**, paste the key into the integration key field, and save.
   </Step>
   <Step title="Test the connection">
     Back in the TryRoki dashboard, click **Test connection** to verify the plugin can be reached.
@@ -85,7 +89,7 @@ All requests from TryRoki to your WordPress site are authenticated using the sha
 
 | Symptom | Check |
 | --- | --- |
-| Test connection fails | Verify the site URL is correct and the TryRoki plugin is activated on WordPress. |
-| Invalid secret key error | Confirm the key copied from the TryRoki dashboard matches exactly what is pasted into Settings → Tryroki on WordPress. |
+| Test connection fails | Verify the site URL is correct and the Roki plugin is installed and activated on WordPress. |
+| Invalid secret key error | Confirm the key copied from the TryRoki dashboard matches exactly what is pasted into **Tryroki → Manage** on WordPress. |
 | Articles not appearing | Check that WordPress sync is enabled in the TryRoki dashboard and that the default post status is not set to Draft if you expect to see published posts. |
 | Featured image missing | The plugin downloads images from external URLs — ensure your WordPress host can make outbound HTTP requests. |
